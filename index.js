@@ -28,12 +28,9 @@ async function notify(emoji, emojiId, channel, memberId, nickname, discriminator
         message.reactions.resolve(emojiId).remove()
     }
     if(emoji === '🖕') {
-        const content = `:fire::fire::fire: <@${memberId}>(${nickname}#${discriminator})님이 법규를 시전하셨습니다!!! :fire::fire::fire:`
-        if(channel.type === 'GUILD_NEWS') {
-            await client.channels.cache.get(config.news_middle_finger).send(content)
-            return
-        }
-        await channel.send(content)
+        const content = `:fire::fire::fire: <@${memberId}>(${nickname}#${discriminator})님이 <#${channel.id}>에서 법규를 시전하셨습니다!!! :fire::fire::fire:`
+        const logging = await client.channels.fetch(config.logging)
+        logging.send(content)
     }
 }
 
