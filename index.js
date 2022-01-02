@@ -3,6 +3,7 @@ const client = new discord.Client({
     intents: ['GUILD_MESSAGE_REACTIONS', 'GUILD_MEMBERS', 'GUILD_EMOJIS_AND_STICKERS'],
     partials: ['USER', 'REACTION', 'MESSAGE']
 })
+const config = require('./config.json')
 
 client.on('raw', async event => {
     if(event.t === 'MESSAGE_REACTION_ADD') {
@@ -26,12 +27,16 @@ async function notify(emoji, emojiId, channel, memberId, nickname, discriminator
     if(emojiId !== null) {
         message.reactions.resolve(emojiId).remove()
     }
-    if(channel.type === 'GUILD_NEWS') return
     if(emoji === '🖕') {
-        await channel.send(`:fire::fire::fire: <@${memberId}>(${nickname}#${discriminator})님이 법규를 시전하셨습니다!!! :fire::fire::fire:`)
+        const content = `:fire::fire::fire: <@${memberId}>(${nickname}#${discriminator})님이 법규를 시전하셨습니다!!! :fire::fire::fire:`
+        if(channel.type === 'GUILD_NEWS') {
+            await client.channels.cache.get(config.news_middle_finger).send(content)
+            return
+        }
+        await channel.send(content)
     }
 }
 
-client.login(require('./config.json').token).then(() => {
+client.login(config.token).then(() => {
     console.log('Logined!')
 })
