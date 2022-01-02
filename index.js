@@ -26,6 +26,7 @@ async function notify(emoji, emojiId, channel, memberId, nickname, discriminator
     if(emojiId !== null) {
         message.reactions.resolve(emojiId).remove()
     }
+    if(channel.type === 'GUILD_NEWS') return
     if(emoji === '🖕') {
         await channel.send(`:fire::fire::fire: <@${memberId}>(${nickname}#${discriminator})님이 법규를 시전하셨습니다!!! :fire::fire::fire:`)
     }
